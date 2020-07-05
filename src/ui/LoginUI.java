@@ -182,16 +182,13 @@ public class LoginUI extends JDialog implements ActionListener {
 								JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 								return;
 							}
-						/*if (user == null) {
-							winMessage("用户名或密码不正确！登录失败！");
-							cleanUserInfo();
-							this.code2.setText(code());
-						} else {*/
-								/*if (user.getType() == 0) {//进入用户界面
-									new UserUI(user,1);
-								} else if (user.getType() == 1) {//进入管理员界面
-									new AdminUI(user);
-								}*/
+						if(BeanAdmin.currentLoginAdmin.getAm_name().length()==0) {//进入用户界面
+							
+						}
+						else {
+							AdminUI frame=new AdminUI();
+							frame.setVisible(true);
+						}
 								this.jf.dispose();
 						//}
 					/*} else {

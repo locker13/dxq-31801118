@@ -6,6 +6,7 @@ public class BeanShop {
 	private int sp_star;
 	private double sp_aver;
 	private int sp_sum;
+	public static final String[] ShopTitle= {"商家编号","商家名", "星级", "人均消费", "总销量"};
 	public int getSp_id() {
 		return sp_id;
 	}
@@ -36,4 +37,12 @@ public class BeanShop {
 	public void setSp_sum(int sp_sum) {
 		this.sp_sum = sp_sum;
 	}
+	public String getCell(int col){
+		if(col==0) return String.valueOf(sp_id);
+		else if(col==1) return sp_name;
+		else if(col==2) return String.valueOf(sp_star);
+		else if(col==3) return String.valueOf(sp_aver);
+		else if(col==4) return String.valueOf(sp_sum);
+		else return "";
+}
 }

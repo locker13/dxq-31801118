@@ -12,7 +12,7 @@ import model.BeanUserMsg;
 
 public class UserMannager {
 	public static BeanUserMsg currentUser=null;
-	public void reg(String userid,String pwd,String pwd2,int sex,int phone,
+	public void reg(String userid,String pwd,String pwd2,int sex,String phone,
 			String mail,String city) throws BaseException {
 		if(userid.length()==0) throw new BusinessException("用户名不能为空");
 		if(pwd.length()==0) throw new BusinessException("密码不能为空");
@@ -44,11 +44,12 @@ public class UserMannager {
 			pst.setInt(1,i);
 			pst.setString(2, userid);
 			if(sex==1)
-				pst.setString(3, "女");
-			else
 				pst.setString(3, "男");
+			else
+				pst.setString(3, "女");
 			pst.setString(4, pwd);
-			pst.setInt(5, phone);
+			//pst.setInt(5, phone);
+			pst.setString(5, phone);
 			pst.setString(6, mail);
 			pst.setString(7,city);
 			pst.setTimestamp(8, new java.sql.Timestamp(System.currentTimeMillis()));

@@ -7,12 +7,17 @@ import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import control.UserMannager;
+import util.BaseException;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -20,8 +25,9 @@ import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
 
-public class RegisterUI extends JFrame {
+public class RegisterUI extends JFrame implements ActionListener{
 	private ButtonGroup buttongroup = new ButtonGroup();
+	private JFrame jf=new JFrame("注册");
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -82,6 +88,7 @@ public class RegisterUI extends JFrame {
 		label_1.setFont(new Font("宋体", Font.PLAIN, 15));
 		label_1.setBounds(89, 112, 30, 34);
 		contentPane.add(label_1);
+		
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
@@ -151,12 +158,15 @@ public class RegisterUI extends JFrame {
 		
 		button.setFont(new Font("宋体", Font.PLAIN, 21));
 		button.setBounds(59, 380, 130, 44);
+		button.addActionListener(this);
 		contentPane.add(button);
+		
 		
 		
 		button_1.setFont(new Font("宋体", Font.PLAIN, 21));
 		button_1.setBounds(236, 380, 130, 44);
 		contentPane.add(button_1);
+		button_1.addActionListener(this);
 		
 		
 		label_7.setFont(new Font("宋体", Font.PLAIN, 30));
@@ -167,16 +177,30 @@ public class RegisterUI extends JFrame {
 		JOptionPane.showMessageDialog(null, str, "提示",JOptionPane.INFORMATION_MESSAGE);
 	}
 	public void actionPerformed(ActionEvent ac) {
-		if(ac.getSource()==this.button_1)
+		if(ac.getSource()==this.button)
 		{
 			String name=textField.getText();
 			String pwd1=textField_1.getText();
 			String pwd2=textField_2.getText();
-			if(name.equals("")||pwd1.equals("")||pwd2.equals("")) winMessage("账号、密码不能为空！");
+			//if(name.equals("")||pwd1.equals("")||pwd2.equals("")) winMessage("账号、密码不能为空！");
 			String phone=textField_3.getText();
 			String mail=textField_4.getText();
 			String city=textField_5.getText();
+			int sex;
+			if(radioButton.isSelected())
+				sex=0;
+			else
+				sex=1;
+			try {
+				UserMannager um=new UserMannager();
+				um.reg(name, pwd1, pwd2, sex, phone, mail, city);
+			}catch (BaseException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+				return;
 		}
+			this.setVisible(false);
 	}
-	
-}
+	else if(ac.getSource()==this.button_1) {
+		this.setVisible(false);
+	}
+}}

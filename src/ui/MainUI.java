@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import model.BeanAdmin;
 import ui.*;
 public class MainUI extends JFrame{
 	private static final long serialVersionUID = 1L;
@@ -31,5 +32,6 @@ public class MainUI extends JFrame{
 	this.setTitle("个人计划管理系统");
 	dlgLogin=new LoginUI();
 	dlgLogin.setVisible(false);
+	
 	}
 }
