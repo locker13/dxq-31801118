@@ -46,6 +46,8 @@ public class ShopMUI extends JFrame implements ActionListener {
 	private JButton button_2;
 	private JButton button_3;
 	private BeanShop curShop=null;
+	private JButton button_4;
+	private JButton button_5;
 	
 	private void reloadShopTable() {
 		try {
@@ -174,6 +176,19 @@ public class ShopMUI extends JFrame implements ActionListener {
 		button_3.setBounds(645, 106, 129, 62);
 		contentPane.add(button_3);
 		button_3.addActionListener(this);
+		
+		button_4 = new JButton("\u5220\u9664\u5546\u5BB6");
+		button_4.setFont(new Font("ËÎÌå", Font.PLAIN, 22));
+		button_4.setBounds(645, 204, 129, 62);
+		button_4.addActionListener(this);
+		contentPane.add(button_4);
+		
+		button_5 = new JButton("\u6DFB\u52A0\u5546\u5BB6");
+		button_5.setFont(new Font("ËÎÌå", Font.PLAIN, 22));
+		button_5.setBounds(648, 300, 129, 62);
+		button_5.addActionListener(this);
+		contentPane.add(button_5);
+		
 		this.reloadShopTable();
 		
 	}
@@ -202,6 +217,19 @@ public class ShopMUI extends JFrame implements ActionListener {
 			ShopModUI frame=new ShopModUI(curShop);
 			frame.setVisible(true);
 			//this.setVisible(false);
+		}
+		else if(ac.getSource()==this.button_4) {
+			ShopMannager sm=new ShopMannager();
+			try {
+				sm.deleteshop(curShop);
+			} catch (BaseException e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		else if(ac.getSource()==this.button_5) {
+			ShopInsUI frame=new ShopInsUI();
+			frame.setVisible(true);
 		}
 	}
 }

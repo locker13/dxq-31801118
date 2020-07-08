@@ -85,7 +85,93 @@ public class ShopMannager {
 		}
 		return result;
 	}
-	public void actionPerformed(ActionEvent ac) {
+	public static void deleteshop(BeanShop s)throws BaseException{
 		
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="delete from shop where sp_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, s.getSp_id());
+			pst.execute();
+			pst.close();
+		}catch (SQLException e) {
+		e.printStackTrace();
+		throw new DbException(e);
+	}
+	finally{
+		if(conn!=null)
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	}
+	public static void Insshop(BeanShop s) throws BaseException {
+		if(s.getSp_name().length()==0) throw new BusinessException("商家名不能为空");
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="select max(sp_id) from shop";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			int i=1;
+			java.sql.ResultSet rs=pst.executeQuery();
+			if(rs.next())
+				i+=rs.getInt(1);
+			else
+				i=1;
+			sql="insert into shop values(?,?,?,?,?)";
+			pst=conn.prepareStatement(sql);
+			pst.setString(2,s.getSp_name());
+			pst.setInt(3, s.getSp_star());
+			pst.setDouble(4, s.getSp_aver());
+			pst.setInt(5, s.getSp_sum());
+			pst.setInt(1,i);
+			pst.execute();
+			pst.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+	}
+	public static void modshop(BeanShop s) throws BaseException {
+		if(s.getSp_name().length()==0) throw new BusinessException("商家名不能为空");
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="UPDATE shop set sp_name=?,sp_star=?,sp_aver=?,sp_sum=? where sp_id=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setString(1,s.getSp_name());
+			System.out.println(s.getSp_id());
+			pst.setInt(2, s.getSp_star());
+			pst.setDouble(3, s.getSp_aver());
+			pst.setInt(4, s.getSp_sum());
+			pst.setInt(5, s.getSp_id());
+			pst.execute();
+			pst.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
 	}
 }

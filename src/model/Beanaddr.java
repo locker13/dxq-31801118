@@ -1,6 +1,7 @@
 package model;
 
 public class Beanaddr {
+	public static final String[] ShopTitle= {"省","市","区","地址","联系人","电话"};
 	private int ad_id;
 	private int ad_uid;
 	private String ad_prin;
@@ -58,4 +59,13 @@ public class Beanaddr {
 	public void setAd_phone(String ad_phone) {
 		this.ad_phone = ad_phone;
 	}
+	public String getCell(int col){
+		if(col==0) return ad_prin;
+		else if(col==1) return ad_city;
+		else if(col==2) return ad_block;
+		else if(col==3) return ad_addr;
+		else if(col==4) return ad_person;
+		else if(col==5) return ad_phone;
+		else return "";
+}
 }

@@ -7,12 +7,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import control.ShopMannager;
 import model.BeanShop;
 import util.BaseException;
+import util.BusinessException;
 import util.DBUtil;
 import util.DbException;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +28,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 public class ShopModUI extends JFrame implements ActionListener{
-
+	BeanShop sf=new BeanShop();
 	private JPanel contentPane;
 	private JTextField txtname;
 	private JTextField textaver;
@@ -52,35 +56,10 @@ public class ShopModUI extends JFrame implements ActionListener{
 	/**
 	 * Create the frame.
 	 */
-	public static void modshop(BeanShop s) throws BaseException {
-		Connection conn=null;
-		
-		try {
-			conn=DBUtil.getConnection();
-			String sql="UPDATE shop set sp_name=?,sp_star=?,sp_aver=?,sp_sum=? where sp_id=?";
-			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
-			pst.setString(1,s.getSp_name());
-			pst.setInt(2, s.getSp_star());
-			pst.setDouble(3, s.getSp_sum());
-			pst.setInt(4, s.getSp_sum());
-			pst.setInt(5, s.getSp_id());
-			pst.execute();
-			pst.close();
-		}catch (SQLException e) {
-			e.printStackTrace();
-			throw new DbException(e);
-		}
-		finally{
-			if(conn!=null)
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
-	}
+	
 	public ShopModUI(BeanShop s){
+		sf.setSp_id(s.getSp_id());
+		
 		setTitle("\u4FE1\u606F\u4FEE\u6539");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 263, 395);
@@ -154,12 +133,32 @@ public class ShopModUI extends JFrame implements ActionListener{
 		
 
 	}
+	public static void winMessage(String str) {// 提示窗口，有多个地方调用
+		JOptionPane.showMessageDialog(null, str, "提示",JOptionPane.INFORMATION_MESSAGE);
+	}
 	@Override
 	public void actionPerformed(ActionEvent ac) {
 		if (ac.getSource() == this.button) {
-		BeanShop s=new BeanShop();
-		s.setSp_name(txtname.getText());
-		s.setSp_star(Integer.parseInt((String) comboBox.getSelectedItem()));
+		
+		sf.setSp_name(txtname.getText());
+		try {
+			sf.setSp_star(Integer.parseInt((String) comboBox.getSelectedItem()));
+			sf.setSp_aver(Double.parseDouble(textaver.getText()));
+			sf.setSp_sum(Integer.parseInt(textsum.getText()));
+		}catch (NumberFormatException e) {
+		    //e.printStackTrace();//捕捉处理异常，暂时没有
+		    winMessage("请输入正确格式");
+		    return;
+		}
+		try {
+			ShopMannager sm=new ShopMannager();
+			sm.modshop(sf);
+			this.setVisible(false);
+		} catch (BaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
 		
 	}
 		else if(ac.getSource() == this.button_1)

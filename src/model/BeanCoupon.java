@@ -9,6 +9,7 @@ public class BeanCoupon {
 	private Date cp_stdate;
 	private Date cp_eddate;
 	private int cp_sid;
+	public static final String[] ShopTitle= {"消费券编号","优惠金额", "集单要求数","开始日期","结束日期"};
 	public int getCp_id() {
 		return cp_id;
 	}
@@ -45,4 +46,12 @@ public class BeanCoupon {
 	public void setCp_sid(int cp_sid) {
 		this.cp_sid = cp_sid;
 	}
+	public String getCell(int col){
+		if(col==0) return String.valueOf(cp_id);
+		else if(col==1) return String.valueOf(cp_money);
+		else if(col==2) return String.valueOf(cp_count);
+		else if(col==3) return String.valueOf(cp_stdate);
+		else if(col==4) return String.valueOf(cp_eddate);
+		else return "";
+}
 }

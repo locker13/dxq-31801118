@@ -82,7 +82,7 @@ public class ShopUI extends JFrame implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ShopMUI frame = new ShopMUI();
+					ShopUI frame = new ShopUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

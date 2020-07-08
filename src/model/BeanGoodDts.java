@@ -1,6 +1,7 @@
 package model;
 
 public class BeanGoodDts {
+	public static final String[] tblGoodTitle= {"商品编号","所属分类", "商品名", "价格","优惠价格"};
 	private int gd_id;
 	private int gd_kindid;
 	private String gd_name;
@@ -36,4 +37,12 @@ public class BeanGoodDts {
 	public void setGd_reduce(double gd_reduce) {
 		this.gd_reduce = gd_reduce;
 	}
+	public String getCell(int col){
+		if(col==0) return String.valueOf(gd_id);
+		else if(col==1) return String.valueOf(gd_kindid);
+		else if(col==2) return gd_name;
+		else if(col==3) return String.valueOf(gd_price);
+		else if(col==4) return String.valueOf(gd_reduce);	
+		else return "";
+}
 }

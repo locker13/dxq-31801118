@@ -62,7 +62,8 @@ public class LoginMannager {
 			a.setUm_mail(rs.getString(6));
 			a.setUm_city(rs.getString(7));
 			a.setUm_status(rs.getBoolean(8));
-			a.setUm_endtime(rs.getDate(9));
+			if(rs.getDate(9)!=null)
+				a.setUm_endtime(rs.getDate(9));
 			if(!(pwd.equals(a.getUm_code())))throw new BusinessException("ÃÜÂë´íÎó");
 			rs.close();
 			pst.close();

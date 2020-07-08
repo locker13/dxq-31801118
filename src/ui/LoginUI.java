@@ -182,8 +182,9 @@ public class LoginUI extends JDialog implements ActionListener {
 								JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 								return;
 							}
-						if(BeanAdmin.currentLoginAdmin.getAm_name().length()==0) {//进入用户界面
-							
+						if(BeanAdmin.currentLoginAdmin==null) {//进入用户界面
+							UserUI frame=new UserUI();
+							frame.setVisible(true);
 						}
 						else {
 							AdminUI frame=new AdminUI();
