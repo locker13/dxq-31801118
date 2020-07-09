@@ -129,7 +129,7 @@ public class GoodsMUI extends JFrame implements ActionListener{
 	 * Create the frame.
 	 */
 	public GoodsMUI() {
-		setTitle("\u6EE1\u51CF\u7BA1\u7406");
+		setTitle("\u5546\u54C1\u7BA1\u7406");
 		 this.dataTableKind.addMouseListener(new MouseAdapter (){
 
 				@Override
@@ -227,10 +227,10 @@ public class GoodsMUI extends JFrame implements ActionListener{
 		this.getContentPane().add(scrollPane);
 		
 		JScrollPane scrollPane_1 = new JScrollPane(this.dataGoods);
-		scrollPane_1.setBounds(406, 39, 603, 587);
+		scrollPane_1.setBounds(406, 43, 603, 562);
 		this.getContentPane().add(scrollPane_1);
 		
-		JLabel label = new JLabel("\u8F93\u5165\u5546\u54C1\u7C7B\u540D");
+		JLabel label = new JLabel("\u8F93\u5165\u5546\u54C1\u7C7B\u7F16\u53F7");
 		label.setFont(new Font("ËÎÌו", Font.PLAIN, 15));
 		label.setBounds(112, 10, 125, 19);
 		contentPane.add(label);

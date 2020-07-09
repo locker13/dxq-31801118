@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class BeanRider {
 	private int rd_id;
+	public static final String[] ShopTitle= {"骑手编号","骑手姓名", "入职日期", "骑手身份"};
 	public int getRd_id() {
 		return rd_id;
 	}
@@ -31,4 +32,11 @@ public class BeanRider {
 	private String rd_name;
 	private Date rd_in;
 	private String rd_status;
+	public String getCell(int col){
+		if(col==0) return String.valueOf(rd_id);
+		else if(col==1) return rd_name;
+		else if(col==2) return String.valueOf(rd_in);
+		else if(col==3) return rd_status;
+		else return "";
+}
 }

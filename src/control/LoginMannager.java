@@ -61,8 +61,8 @@ public class LoginMannager {
 			a.setUm_phone(rs.getString(5));
 			a.setUm_mail(rs.getString(6));
 			a.setUm_city(rs.getString(7));
-			a.setUm_status(rs.getBoolean(8));
-			if(rs.getDate(9)!=null)
+			a.setUm_status(rs.getInt(8));
+			if(a.getUm_status()==1)
 				a.setUm_endtime(rs.getDate(9));
 			if(!(pwd.equals(a.getUm_code())))throw new BusinessException("ÃÜÂë´íÎó");
 			rs.close();

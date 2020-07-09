@@ -183,8 +183,15 @@ public class LoginUI extends JDialog implements ActionListener {
 								return;
 							}
 						if(BeanAdmin.currentLoginAdmin==null) {//进入用户界面
-							UserUI frame=new UserUI();
-							frame.setVisible(true);
+							UserMainUI frame;
+							try {
+								frame = new UserMainUI();
+								frame.setVisible(true);
+							} catch (BaseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
 						}
 						else {
 							AdminUI frame=new AdminUI();

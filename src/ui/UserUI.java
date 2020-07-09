@@ -6,6 +6,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import model.BeanUserMsg;
+import util.BaseException;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -19,9 +23,10 @@ public class UserUI extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
 	JButton button = new JButton("\u6536\u8D27\u5730\u5740\u7BA1\u7406");
-	JButton button_1 = new JButton("\u5546\u54C1\u7BA1\u7406");
-	JButton button_2 = new JButton("\u6EE1\u51CF\u7BA1\u7406");
-	JButton button_3 = new JButton("\u4F18\u60E0\u5238\u7BA1\u7406");
+	JButton button_1 = new JButton("\u6210\u4E3A\u4F1A\u5458");
+	JButton button_2 = new JButton("\u5BC6\u7801\u4FEE\u6539");
+	JButton button_3 = new JButton("\u67E5\u770B\u4F18\u60E0\u5238");
+	JButton button_4 = new JButton("\u8FD4\u56DE\u8D2D\u4E70\u9875\u9762");
 	/**
 	 * Launch the application.
 	 */
@@ -77,10 +82,15 @@ public class UserUI extends JFrame implements ActionListener{
 		contentPane.add(button_3);
 		button_3.addActionListener(this);
 		
-		JLabel label = new JLabel("\u6B22\u8FCE\u4F7F\u7528\u5916\u5356\uFF01");
+		JLabel label = new JLabel("\u4E2A\u4EBA\u4FE1\u606F\u7BA1\u7406");
 		label.setFont(new Font("ËÎÌו", Font.PLAIN, 27));
 		label.setBounds(131, 10, 240, 62);
 		contentPane.add(label);
+		button_4.setFont(new Font("ËÎÌו", Font.PLAIN, 15));
+		button_4.setBounds(148, 121, 145, 56);
+		button_4.addActionListener(this);
+		
+		contentPane.add(button_4);
 	}
 	public void actionPerformed(ActionEvent ac)
 	{
@@ -90,23 +100,45 @@ public class UserUI extends JFrame implements ActionListener{
 			frame.setVisible(true);
 			this.setVisible(false);
 		}
-		/*else if(ac.getSource()==this.button_1)
+		else if(ac.getSource()==this.button_1)
 		{
-			GoodsUI frame=new GoodsUI();
-			frame.setVisible(true);
-			this.setVisible(false);
+			if(BeanUserMsg.currentLoginUser.getUm_status()==1)
+			{
+				MenberUI frame=new MenberUI();
+				frame.setVisible(true);
+				this.setVisible(false);
+			}
+			else
+			{
+				MemberInUI frame=new MemberInUI();
+				frame.setVisible(true);
+				this.setVisible(false);
+			}
+			
 		}
 		else if(ac.getSource()==this.button_2)
 		{
-			ReduceUI frame=new ReduceUI();
+			PwdModUI frame=new PwdModUI();
 			frame.setVisible(true);
-			this.setVisible(false);
 		}
-		else if(ac.getSource()==this.button_3)
+		/*else if(ac.getSource()==this.button_3)
 		{
 			CouponUI frame=new CouponUI();
 			frame.setVisible(true);
 			this.setVisible(false);
 		}*/
+		else if(ac.getSource()==this.button_4)
+		{
+			this.setVisible(false);
+			UserMainUI frame;
+			try {
+				frame = new UserMainUI();
+				frame.setVisible(true);
+			} catch (BaseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 	}
 }

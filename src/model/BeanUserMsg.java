@@ -13,7 +13,7 @@ public class BeanUserMsg {
 	private String um_mail;
 	private String um_city;
 	private Date um_regt;
-	private Boolean um_status;
+	private int um_status;
 	private Date um_endtime;
 	public int getUm_id() {
 		return um_id;
@@ -63,10 +63,10 @@ public class BeanUserMsg {
 	public void setUm_regt(Date um_regt) {
 		this.um_regt = um_regt;
 	}
-	public Boolean getUm_status() {
+	public int getUm_status() {
 		return um_status;
 	}
-	public void setUm_status(Boolean um_status) {
+	public void setUm_status(int um_status) {
 		this.um_status = um_status;
 	}
 	public Date getUm_endtime() {

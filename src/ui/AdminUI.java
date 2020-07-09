@@ -22,6 +22,7 @@ public class AdminUI extends JFrame implements ActionListener{
 	JButton button_1 = new JButton("\u5546\u54C1\u7BA1\u7406");
 	JButton button_2 = new JButton("\u6EE1\u51CF\u7BA1\u7406");
 	JButton button_3 = new JButton("\u4F18\u60E0\u5238\u7BA1\u7406");
+	JButton button_4 = new JButton("\u9A91\u624B\u7BA1\u7406");
 	/**
 	 * Launch the application.
 	 */
@@ -81,6 +82,12 @@ public class AdminUI extends JFrame implements ActionListener{
 		label.setFont(new Font("ËÎÌו", Font.PLAIN, 27));
 		label.setBounds(155, 10, 200, 62);
 		contentPane.add(label);
+		
+		
+		button_4.setFont(new Font("ËÎÌו", Font.PLAIN, 15));
+		button_4.setBounds(75, 198, 112, 23);
+		button_4.addActionListener(this);
+		contentPane.add(button_4);
 	}
 	public void actionPerformed(ActionEvent ac)
 	{
@@ -105,6 +112,12 @@ public class AdminUI extends JFrame implements ActionListener{
 		else if(ac.getSource()==this.button_3)
 		{
 			CouponMUI frame=new CouponMUI();
+			frame.setVisible(true);
+			this.setVisible(false);
+		}
+		else if(ac.getSource()==this.button_4)
+		{
+			RiderMUI frame=new RiderMUI();
 			frame.setVisible(true);
 			this.setVisible(false);
 		}
