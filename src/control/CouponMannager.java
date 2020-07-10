@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import model.BeanCoupon;
 import model.BeanReduce;
 import model.BeanShop;
+import model.BeanUserCoup;
+import model.BeanUserMsg;
 import util.BaseException;
 import util.BusinessException;
 import util.DBUtil;
@@ -177,5 +179,40 @@ public class CouponMannager {
 					e.printStackTrace();
 				}
 		}
+	}
+	public static List<BeanUserCoup> loadallCoupon() throws BaseException{
+		List<BeanUserCoup> result=new ArrayList<BeanUserCoup>();
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="select * from user_coupon where uc_uid=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, BeanUserMsg.currentLoginUser.getUm_id());
+			java.sql.ResultSet rs=pst.executeQuery();
+			while(rs.next())
+			{
+				BeanUserCoup s=new BeanUserCoup();
+				s.setUc_uid(rs.getInt(1));
+				s.setUc_cid(rs.getInt(2));
+				s.setUc_sid(rs.getInt(3));
+				s.setUc_red(rs.getInt(4));
+				s.setUc_sum(rs.getInt(5));
+				s.setEndtime(rs.getDate(6));
+				result.add(s);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return result;
 	}
 }

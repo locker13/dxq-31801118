@@ -128,4 +128,31 @@ public static void InsRider(BeanRider s) throws BaseException {
 			}
 	}
 }
+public static int MaxRdId() throws BaseException {
+	Connection conn=null;
+	try {
+		conn=DBUtil.getConnection();
+		String sql="select max(rd_id) from rider";
+		java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+		int i=0;
+		java.sql.ResultSet rs=pst.executeQuery();
+		if(rs.next())
+			i+=rs.getInt(1);
+		else
+			i=1;
+		return i;
+	}catch (SQLException e) {
+		e.printStackTrace();
+		throw new DbException(e);
+	}
+	finally{
+		if(conn!=null)
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+}
 }

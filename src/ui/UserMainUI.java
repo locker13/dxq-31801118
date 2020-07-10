@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,13 +22,17 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import control.GoodsMannager;
+import javassist.compiler.Javac;
 import control.*;
 import model.BeanGoodDts;
 import model.BeanGoodKind;
+import model.BeanGoodOrder;
+import model.BeanOrderDts;
+import model.BeanShop;
 import model.BeanUserMsg;
 import model.Beanaddr;
 import util.BaseException;
-
+import util.DbException;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -37,9 +42,10 @@ import java.awt.Component;
 import javax.swing.JComboBox;
 
 public class UserMainUI extends JFrame implements ActionListener{
-
+//combobox 下标从0开始 item是字符串 地址用用户号+地址对应   商家用下标对应得编号就行 查询数组然后添加到新的order数组中，然后添加
 	private JPanel contentPane;
 	JComboBox comboBox = new JComboBox();
+	JComboBox comboBox_1 = new JComboBox();
 	private JTextField ShopName;
 	private JButton button;
 	private JButton button_1;
@@ -63,6 +69,7 @@ public class UserMainUI extends JFrame implements ActionListener{
 	int flag=-1;
 	int number=0;
 	double sum=0;//总价
+	double fsum=0;//计算满减优惠之后得
 	static int count=0;//记录购物车里面有多少件物品
 	private JButton button_3;
 	private JButton button_5;
@@ -72,6 +79,17 @@ public class UserMainUI extends JFrame implements ActionListener{
 	private JLabel label_2;
 	private JLabel Labelsum;
 	List<Beanaddr> alladdr=new ArrayList<Beanaddr>(20);
+	List<BeanShop> allshop=new ArrayList<BeanShop>();
+	List<BeanOrderDts> allorder=new ArrayList<BeanOrderDts>();//每个订单的商品数
+	private JButton button_2;
+	private JLabel label_5;
+	private JLabel label_6;
+	private JLabel label_7;
+	private JLabel label_8;
+	private JLabel label_9;
+	private JButton button_6;
+	private JLabel labelfsum;
+	BeanGoodOrder order=new BeanGoodOrder();//顺便初始化了他的订单id
 	
 	private void reloadShopTable() {
 		try {
@@ -181,6 +199,11 @@ public class UserMainUI extends JFrame implements ActionListener{
 		}catch (BaseException e) {
 			e.printStackTrace();
 		}
+		try {
+			allshop=ShopMannager.loadallShop();
+		}catch (BaseException e) {
+			e.printStackTrace();
+		}
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1679, 866);
@@ -232,7 +255,7 @@ public class UserMainUI extends JFrame implements ActionListener{
 		
 		
 		button_4.setFont(new Font("宋体", Font.PLAIN, 17));
-		button_4.setBounds(1168, 7, 156, 23);
+		button_4.setBounds(1237, 7, 156, 23);
 		button_4.addActionListener(this);
 		contentPane.add(button_4);
 		
@@ -242,7 +265,7 @@ public class UserMainUI extends JFrame implements ActionListener{
 		
 		button_5 = new JButton("\u4E2A\u4EBA\u4FE1\u606F\u7BA1\u7406");
 		button_5.setFont(new Font("宋体", Font.PLAIN, 17));
-		button_5.setBounds(1334, 7, 160, 23);
+		button_5.setBounds(1422, 7, 160, 23);
 		button_5.addActionListener(this);
 		contentPane.add(button_5);
 		
@@ -282,6 +305,65 @@ public class UserMainUI extends JFrame implements ActionListener{
 		label_3.setFont(new Font("宋体", Font.PLAIN, 17));
 		label_3.setBounds(1314, 487, 120, 27);
 		contentPane.add(label_3);
+		
+		JLabel label_4 = new JLabel("\u9009\u62E9\u5546\u5BB6");
+		label_4.setFont(new Font("宋体", Font.PLAIN, 17));
+		label_4.setBounds(1314, 542, 120, 27);
+		contentPane.add(label_4);
+		
+		
+		comboBox_1.setFont(new Font("宋体", Font.PLAIN, 17));
+		comboBox_1.setBounds(1444, 546, 125, 30);
+		int p=0;
+		while(p<allshop.size())
+		{
+			comboBox_1.addItem(allshop.get(p).getSp_name()+" "+String.valueOf(allshop.get(p).getSp_star()));;
+			p++;
+		}
+		contentPane.add(comboBox_1);
+		
+		button_2 = new JButton("\u521B\u5EFA\u8BA2\u5355");
+		button_2.addActionListener(this);
+		button_2.setFont(new Font("宋体", Font.PLAIN, 21));
+		button_2.setBounds(1445, 738, 156, 51);
+		contentPane.add(button_2);
+		
+		label_5 = new JLabel("\u6EE1\u51CF\u89C4\u5219");
+		label_5.setFont(new Font("宋体", Font.PLAIN, 18));
+		label_5.setBounds(1019, 650, 84, 27);
+		contentPane.add(label_5);
+		
+		label_6 = new JLabel("100-10\uFF1B");
+		label_6.setFont(new Font("宋体", Font.PLAIN, 17));
+		label_6.setBounds(1019, 687, 84, 21);
+		contentPane.add(label_6);
+		
+		label_7 = new JLabel("200-30\uFF1B");
+		label_7.setFont(new Font("宋体", Font.PLAIN, 17));
+		label_7.setBounds(1019, 718, 84, 21);
+		contentPane.add(label_7);
+		
+		label_8 = new JLabel("300-50\uFF1B");
+		label_8.setFont(new Font("宋体", Font.PLAIN, 17));
+		label_8.setBounds(1019, 747, 84, 21);
+		contentPane.add(label_8);
+		
+		label_9 = new JLabel("\u7ED3\u7B97\u4EF7\u683C\uFF1A");
+		label_9.setFont(new Font("宋体", Font.PLAIN, 17));
+		label_9.setBounds(1011, 524, 94, 42);
+		contentPane.add(label_9);
+		
+		button_6 = new JButton("\u5546\u54C1\u8BC4\u4EF7");
+		button_6.setFont(new Font("宋体", Font.PLAIN, 17));
+		button_6.setBounds(1074, 8, 125, 23);
+		button_6.addActionListener(this);
+		contentPane.add(button_6);
+		
+		labelfsum = new JLabel("");
+		labelfsum.setFont(new Font("宋体", Font.PLAIN, 17));
+		labelfsum.setText("暂时没有商品");
+		labelfsum.setBounds(1090, 524, 125, 39);
+		contentPane.add(labelfsum);
 
 		this.reloadShopTable();
 	}
@@ -325,15 +407,23 @@ public class UserMainUI extends JFrame implements ActionListener{
 			this.dataCart.repaint();
 			count++;
 			Labelsum.setText(String.valueOf(sum));
+			if(sum>=100&&sum<200)
+				fsum=sum-10;
+			else if(sum>=200&&sum<300)
+				fsum=sum-30;
+			else if(sum>=300)
+				fsum=sum-50;
+			labelfsum.setText(String.valueOf(fsum));
 		}
 		else if(ac.getSource()==this.button_4)
 		{
-			tblCartData=null;
+			tblCartData=new Object[20][BeanGoodDts.tblCartTitle.length];
 			tabCartModel.setDataVector(tblCartData,tblCartTitle);
 			this.dataCart.validate();
 			this.dataCart.repaint();
 			count=0;
 			sum=0;
+			fsum=0;
 			Labelsum.setText("暂时没有商品");
 		}
 		else if(ac.getSource()==this.button_5)
@@ -341,6 +431,65 @@ public class UserMainUI extends JFrame implements ActionListener{
 			this.setVisible(false);
 			UserUI frame=new UserUI();
 			frame.setVisible(true);
+		}
+		else if(ac.getSource()==this.button_6)
+		{
+			System.out.print(comboBox.getSelectedIndex());
+		} 
+		else if(ac.getSource()==this.button_2)//创建订单
+		{
+			Random random = new Random();//暂时随机找一个骑手接单
+			int maxrid;
+			try {
+				maxrid = RiderMannager.MaxRdId();
+				System.out.println(maxrid);
+				int shopIndex=comboBox_1.getSelectedIndex();
+				order.setGo_sid(allshop.get(shopIndex).getSp_id());
+				order.setGo_uid(BeanUserMsg.currentLoginUser.getUm_id());
+				if(fsum==sum-10)//简化版本，实际上应该查询满减方案表
+					order.setGo_reid(1);
+				else if(fsum==sum-30)
+					order.setGo_reid(2);
+				else if(fsum==sum-50)
+					order.setGo_reid(3);
+				order.setGo_newpri(1);//加入优惠券之后的最后金额
+				order.setGo_rid(random.nextInt(maxrid)+1);//随即骑手接单
+				order.setGo_cid(1);//1测试
+				order.setGo_sttime(new java.sql.Timestamp(System.currentTimeMillis()));//获取当前时间戳，修改数据类型，之后时间戳+1即可
+				Long time=System.currentTimeMillis();
+				java.util.Date date=new java.util.Date(time);
+				time+=60*1000*60;//获取一小时后的时间
+				order.setGo_edtime(new java.sql.Timestamp(time));//存疑，不知道能不能这样加。 还是要用时间戳？ format
+				order.setGo_status("配送中");
+				order.setGo_addr((String)comboBox.getSelectedItem());
+				for(int k=0;k<count;k++)//用于输入订单商品信息
+				{
+					BeanOrderDts p=new BeanOrderDts();
+					p.setOd_oid(order.getGo_oid());
+					p.setOd_gid(Integer.parseInt((String) tblCartData[k][0]));
+					p.setOd_price(Double.parseDouble((String)tblCartData[k][3]));
+					p.setOd_count(Integer.parseInt((String)tblCartData[k][4]));
+					allorder.add(p);
+				}
+				OrderMannager.InsOrder(order);
+				for(int k=0;k<allorder.size();k++)
+					OrderMannager.InsOrderDts(allorder.get(k));
+				winMessage("创建成功！");
+				tblCartData=new Object[20][BeanGoodDts.tblCartTitle.length];
+				tabCartModel.setDataVector(tblCartData,tblCartTitle);
+				this.dataCart.validate();
+				this.dataCart.repaint();
+				count=0;
+				sum=0;
+				fsum=0;
+				Labelsum.setText("暂时没有商品");//重置购物车和各种东西
+				
+			}catch (NumberFormatException e) {
+			    winMessage("格式出错 请重新设置购物车");
+			    return;
+			}catch(BaseException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

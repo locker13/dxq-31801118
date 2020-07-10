@@ -1,6 +1,7 @@
 package model;
 
 public class BeanOrderDts {
+	public static final String[] ShopTitle= {"商品编号","数量","价格"};
 	private int od_oid;
 	private int od_gid;
 	private int od_count;
@@ -36,5 +37,10 @@ public class BeanOrderDts {
 	public void setOd_disc(double od_disc) {
 		this.od_disc = od_disc;
 	}
-	
+	public String getCell(int col){
+		if(col==0) return String.valueOf(od_gid);
+		else if(col==1) return String.valueOf(od_count);
+		else if(col==2) return String.valueOf(od_price);
+		else return "";
+}
 }

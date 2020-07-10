@@ -7,12 +7,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import antlr.FileLineFormatter;
 import model.BeanUserMsg;
 import util.BaseException;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.persistence.criteria.Order;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -27,6 +29,7 @@ public class UserUI extends JFrame implements ActionListener{
 	JButton button_2 = new JButton("\u5BC6\u7801\u4FEE\u6539");
 	JButton button_3 = new JButton("\u67E5\u770B\u4F18\u60E0\u5238");
 	JButton button_4 = new JButton("\u8FD4\u56DE\u8D2D\u4E70\u9875\u9762");
+	JButton button_5 = new JButton("\u6211\u7684\u8BA2\u5355");
 	/**
 	 * Launch the application.
 	 */
@@ -72,13 +75,13 @@ public class UserUI extends JFrame implements ActionListener{
 		
 		
 		button_2.setFont(new Font("宋体", Font.PLAIN, 15));
-		button_2.setBounds(303, 72, 137, 42);
+		button_2.setBounds(317, 72, 137, 42);
 		contentPane.add(button_2);
 		button_2.addActionListener(this);
 		
 		
 		button_3.setFont(new Font("宋体", Font.PLAIN, 15));
-		button_3.setBounds(303, 181, 137, 48);
+		button_3.setBounds(317, 181, 137, 48);
 		contentPane.add(button_3);
 		button_3.addActionListener(this);
 		
@@ -87,10 +90,16 @@ public class UserUI extends JFrame implements ActionListener{
 		label.setBounds(131, 10, 240, 62);
 		contentPane.add(label);
 		button_4.setFont(new Font("宋体", Font.PLAIN, 15));
-		button_4.setBounds(148, 121, 145, 56);
+		button_4.setBounds(158, 82, 145, 56);
 		button_4.addActionListener(this);
 		
 		contentPane.add(button_4);
+		
+		
+		button_5.setFont(new Font("宋体", Font.PLAIN, 15));
+		button_5.setBounds(157, 157, 145, 56);
+		contentPane.add(button_5);
+		button_5.addActionListener(this);
 	}
 	public void actionPerformed(ActionEvent ac)
 	{
@@ -121,12 +130,12 @@ public class UserUI extends JFrame implements ActionListener{
 			PwdModUI frame=new PwdModUI();
 			frame.setVisible(true);
 		}
-		/*else if(ac.getSource()==this.button_3)
+		else if(ac.getSource()==this.button_3)
 		{
-			CouponUI frame=new CouponUI();
+			CouponHaveUI frame=new CouponHaveUI();
 			frame.setVisible(true);
 			this.setVisible(false);
-		}*/
+		}
 		else if(ac.getSource()==this.button_4)
 		{
 			this.setVisible(false);
@@ -139,6 +148,12 @@ public class UserUI extends JFrame implements ActionListener{
 				e.printStackTrace();
 			}
 			
+		}
+		else if(ac.getSource()==this.button_5)
+		{
+			OrderUI frame=new OrderUI();
+			this.setVisible(false);
+			frame.setVisible(true);
 		}
 	}
 }

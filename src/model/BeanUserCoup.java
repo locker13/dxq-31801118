@@ -3,12 +3,13 @@ package model;
 import java.sql.Date;
 
 public class BeanUserCoup {
+	public static final String[] ShopTitle= {"优惠券编号","商家编号", "可减价格", "拥有数", "结束日期"};
 	private int uc_uid;
 	private int uc_cid;
 	private int uc_sid;
 	private int uc_red;
 	private int uc_sum;
-	private Date endtime;
+	private Date uc_endtime;
 	public int getUc_uid() {
 		return uc_uid;
 	}
@@ -40,9 +41,17 @@ public class BeanUserCoup {
 		this.uc_sum = uc_sum;
 	}
 	public Date getEndtime() {
-		return endtime;
+		return uc_endtime;
 	}
 	public void setEndtime(Date endtime) {
-		this.endtime = endtime;
+		this.uc_endtime = endtime;
 	}
+	public String getCell(int col){
+		if(col==0) return String.valueOf(uc_cid);
+		else if(col==1) return String.valueOf(uc_sid);
+		else if(col==2) return String.valueOf(uc_red);
+		else if(col==3) return String.valueOf(uc_sum);
+		else if(col==4) return String.valueOf(uc_endtime);
+		else return "";
+}
 }
