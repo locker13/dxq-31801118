@@ -8,8 +8,10 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import model.BeanCoupon;
+import model.BeanGoodComt;
 import model.BeanGoodDts;
 import model.BeanGoodKind;
+import model.BeanUserMsg;
 import util.BaseException;
 import util.BusinessException;
 import util.DBUtil;
@@ -285,6 +287,94 @@ public class GoodsMannager {
 					conn.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+	}
+	public static List<BeanGoodComt> loadallcomm(int gid) throws BaseException {
+		List<BeanGoodComt> result=new ArrayList<BeanGoodComt>();
+		Connection conn=null;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="select * from goods_comment where gc_gid=? and gc_uid=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, gid);
+			pst.setInt(2, BeanUserMsg.currentLoginUser.getUm_id());
+			java.sql.ResultSet rs=pst.executeQuery();
+			while(rs.next())
+			{
+				BeanGoodComt p=new BeanGoodComt();
+				p.setGc_gid(rs.getInt(1));
+				p.setGc_sid(rs.getInt(2));
+				p.setGc_uid(rs.getInt(3));
+				p.setGc_word(rs.getString(4));
+				p.setGc_date(rs.getDate(5));
+				p.setGc_star(rs.getInt(6));
+				result.add(p);
+				}
+		}catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return result;
+	}
+	public static void InsComm(BeanGoodComt s) throws BaseException{
+		Connection conn=null; 
+		try {
+			conn=DBUtil.getConnection();
+			String sql="Insert into goods_comment values(?,?,?,?,?,?)";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, s.getGc_gid());
+			pst.setInt(2, s.getGc_sid());
+			pst.setInt(3, s.getGc_uid());
+			pst.setString(4, s.getGc_word());
+			pst.setDate(5, s.getGc_date());
+			pst.setInt(6, s.getGc_star());
+			pst.execute();
+			pst.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+	}
+	public static void deleteComm(BeanGoodComt s) throws BaseException{
+		Connection conn=null; 
+		try {
+			conn=DBUtil.getConnection();
+			String sql="delete from goods_comment where gc_gid=? and gc_sid=? and gc_uid=? and gc_word=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, s.getGc_gid());
+			pst.setInt(2, s.getGc_sid());
+			pst.setInt(3, s.getGc_uid());
+			pst.setString(4, s.getGc_word());
+			pst.execute();
+			pst.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 		}

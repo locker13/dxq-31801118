@@ -84,8 +84,8 @@ public class OrderMannager {
 				s.setGo_newpri(rs.getDouble(5));
 				s.setGo_reid(rs.getInt(6));
 				s.setGo_cid(rs.getInt(7));
-				s.setGo_sttime(rs.getDate(8));
-				s.setGo_edtime(rs.getDate(9));
+				s.setGo_sttime(rs.getTimestamp(8));//转化为long型算了，后面再弄把
+				s.setGo_edtime(rs.getTimestamp(9));
 				/*s.setGo_sttime(rs.getTimestamp(8));
 				s.setGo_edtime(rs.getTimestamp(9));*/
 				s.setGo_addr(rs.getString(10));
@@ -169,11 +169,12 @@ public class OrderMannager {
 			pst.setDouble(5, s.getGo_newpri());
 			pst.setInt(6, s.getGo_reid());
 			pst.setInt(7, s.getGo_cid());
-			pst.setDate(8, new java.sql.Date(s.getGo_sttime().getTime()));
-			pst.setDate(9, new java.sql.Date(s.getGo_edtime().getTime()));
+			/*pst.setDate(8, new java.sql.Date(s.getGo_sttime().getTime()));
+			pst.setDate(9, new java.sql.Date(s.getGo_edtime().getTime()));*/
+			pst.setTimestamp(8,new java.sql.Timestamp(System.currentTimeMillis()));
+			pst.setTimestamp(9,new java.sql.Timestamp(System.currentTimeMillis()+60*1000*60));
 			pst.setString(10,s.getGo_addr());
 			pst.setString(11, s.getGo_status());
-			
 			pst.execute();
 			pst.close();
 		}catch (SQLException e) {

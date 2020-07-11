@@ -3,6 +3,7 @@ package model;
 import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import util.BaseException;
@@ -115,9 +116,12 @@ public class BeanGoodOrder {
 		else if(col==3) return String.valueOf(go_newpri);
 		else if(col==4) return String.valueOf(go_reid);
 		else if(col==5) return String.valueOf(go_cid);
-		else if(col==6) return String.valueOf(go_sttime);
-		else if(col==7) return String.valueOf(go_edtime);
-		else if(col==8) return String.valueOf(go_status);
+		else if(col==6) return new SimpleDateFormat("HH:mm:ss").format(go_sttime.getTime());
+		else if(col==7) return new SimpleDateFormat("HH:mm:ss").format(go_edtime.getTime());
+		//else if(col==6) return String.valueOf(go_sttime); 
+		//else if(col==7) return String.valueOf(go_edtime);
+		else if(col==8) return String.valueOf(go_addr);
+		else if(col==9) return String.valueOf(go_status);
 		else return "";
 }
 	public BeanGoodOrder() throws BaseException{//Éú³É¶©µ¥ºÅ

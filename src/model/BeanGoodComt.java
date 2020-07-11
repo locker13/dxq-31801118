@@ -1,8 +1,11 @@
 package model;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class BeanGoodComt {
+	public static final String[] ShopTitle= {"商品编号","商家编号","用户编号","评价","日期","星级"};
+
 	private int gc_gid;
 	private int gc_sid;
 	private int gc_uid;
@@ -52,4 +55,13 @@ public class BeanGoodComt {
 	public void setGc_pic(String gc_pic) {
 		this.gc_pic = gc_pic;
 	}
+	public String getCell(int col){
+		if(col==0) return String.valueOf(gc_gid);
+		else if(col==1) return String.valueOf(gc_sid);
+		else if(col==2) return String.valueOf(gc_uid);
+		else if(col==3) return String.valueOf(gc_word);
+		else if(col==4) return String.valueOf(gc_date);
+		else if(col==5) return String.valueOf(gc_star);
+		else return "";
+}
 }

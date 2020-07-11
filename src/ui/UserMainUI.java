@@ -29,6 +29,7 @@ import model.BeanGoodKind;
 import model.BeanGoodOrder;
 import model.BeanOrderDts;
 import model.BeanShop;
+import model.BeanUserCoup;
 import model.BeanUserMsg;
 import model.Beanaddr;
 import util.BaseException;
@@ -42,16 +43,18 @@ import java.awt.Component;
 import javax.swing.JComboBox;
 
 public class UserMainUI extends JFrame implements ActionListener{
-//combobox 下标从0开始 item是字符串 地址用用户号+地址对应   商家用下标对应得编号就行 查询数组然后添加到新的order数组中，然后添加
+//combobox 下标从0开始 item是字符串 地址用用户号+地址对应   商家用下标对应得编号就行 查询数组然后添加到新的order数组中，然后添加 优惠券建议加入一个不使用选项
 	private JPanel contentPane;
 	JComboBox comboBox = new JComboBox();
 	JComboBox comboBox_1 = new JComboBox();
+	JComboBox comboBox_2 = new JComboBox();
 	private JTextField ShopName;
 	private JButton button;
 	private JButton button_1;
-	List<BeanGoodKind> allKind=null;
-	List<BeanGoodDts> allGood=null;
-	List<BeanGoodDts> allCart=null;
+	List<BeanGoodKind> allKind=null;//记录种类
+	List<BeanGoodDts> allGood=null;//记录商品
+	List<BeanGoodDts> allCart=null;//记录购物车
+	List<BeanUserCoup> allCou=null;//记录消费券
 	private Object tblShopTitle[]=BeanGoodKind.ShopTitle;
 	private Object tblShopData[][];
 	DefaultTableModel tabShopModel=new DefaultTableModel();
@@ -66,10 +69,13 @@ public class UserMainUI extends JFrame implements ActionListener{
 	private JTable dataCart=new JTable(tabCartModel);
 	private BeanGoodKind curKind=null;
 	private BeanGoodDts curGoods=null;
-	int flag=-1;
+	Long time=System.currentTimeMillis();//获取当前时间，看优惠券是否过期
+	int isCou=0;//是否使用了消费券
+	int flag=-1;//商品下标
 	int number=0;
 	double sum=0;//总价
 	double fsum=0;//计算满减优惠之后得
+	double ffsum=0;//计算满减和优惠券之后的
 	static int count=0;//记录购物车里面有多少件物品
 	private JButton button_3;
 	private JButton button_5;
@@ -88,7 +94,9 @@ public class UserMainUI extends JFrame implements ActionListener{
 	private JLabel label_8;
 	private JLabel label_9;
 	private JButton button_6;
+	JButton button_7 = new JButton("\u5237\u65B0\u4EF7\u683C");
 	private JLabel labelfsum;
+	JLabel labelfin = new JLabel("\u6682\u65F6\u6CA1\u6709\u5546\u54C1");
 	BeanGoodOrder order=new BeanGoodOrder();//顺便初始化了他的订单id
 	
 	private void reloadShopTable() {
@@ -201,6 +209,11 @@ public class UserMainUI extends JFrame implements ActionListener{
 		}
 		try {
 			allshop=ShopMannager.loadallShop();
+		}catch (BaseException e) {
+			e.printStackTrace();
+		}
+		try {
+			allCou=CouponMannager.loadallCoupon();
 		}catch (BaseException e) {
 			e.printStackTrace();
 		}
@@ -348,7 +361,7 @@ public class UserMainUI extends JFrame implements ActionListener{
 		label_8.setBounds(1019, 747, 84, 21);
 		contentPane.add(label_8);
 		
-		label_9 = new JLabel("\u7ED3\u7B97\u4EF7\u683C\uFF1A");
+		label_9 = new JLabel("\u6EE1\u51CF\u4EF7\u683C\uFF1A");
 		label_9.setFont(new Font("宋体", Font.PLAIN, 17));
 		label_9.setBounds(1011, 524, 94, 42);
 		contentPane.add(label_9);
@@ -364,6 +377,43 @@ public class UserMainUI extends JFrame implements ActionListener{
 		labelfsum.setText("暂时没有商品");
 		labelfsum.setBounds(1090, 524, 125, 39);
 		contentPane.add(labelfsum);
+		
+		JLabel label_10 = new JLabel("\u9009\u62E9\u4F18\u60E0\u5238");
+		label_10.setFont(new Font("宋体", Font.PLAIN, 17));
+		label_10.setBounds(1314, 609, 120, 27);
+		contentPane.add(label_10);
+		
+		JLabel label_11 = new JLabel("\u6700\u7EC8\u4EF7\u683C\uFF1A");
+		label_11.setFont(new Font("宋体", Font.PLAIN, 17));
+		label_11.setBounds(1011, 581, 94, 42);
+		contentPane.add(label_11);
+		
+		//用于记录使用优惠券之后
+		labelfin.setFont(new Font("宋体", Font.PLAIN, 17));
+		labelfin.setBounds(1090, 576, 125, 39);
+		labelfin.setText("");
+		contentPane.add(labelfin);
+		
+		
+		comboBox_2.setFont(new Font("宋体", Font.PLAIN, 17));
+		comboBox_2.setBounds(1444, 613, 125, 30);
+		int o=0;
+		comboBox_2.addItem("不使用");
+		while(o<allCou.size())//记录优惠券信息
+		{
+			if(time<allCou.get(o).getEndtime().getTime())
+				comboBox_2.addItem(allCou.get(o).getUc_red());
+			else
+				comboBox_2.addItem("已过期");
+			o++;
+		}
+		contentPane.add(comboBox_2);
+		
+		
+		button_7.setFont(new Font("宋体", Font.PLAIN, 17));
+		button_7.setBounds(1154, 625, 120, 42);
+		button_7.addActionListener(this);
+		contentPane.add(button_7);
 
 		this.reloadShopTable();
 	}
@@ -424,6 +474,8 @@ public class UserMainUI extends JFrame implements ActionListener{
 			count=0;
 			sum=0;
 			fsum=0;
+			ffsum=0;
+			isCou=0;
 			Labelsum.setText("暂时没有商品");
 		}
 		else if(ac.getSource()==this.button_5)
@@ -434,8 +486,41 @@ public class UserMainUI extends JFrame implements ActionListener{
 		}
 		else if(ac.getSource()==this.button_6)
 		{
-			System.out.print(comboBox.getSelectedIndex());
+			CommentUI frame=new CommentUI(curGoods.getGd_id());
+			frame.setVisible(true);
 		} 
+		else if(ac.getSource()==this.button_7)//刷新价格
+		{
+			int status=-1;
+			if(comboBox_2.getSelectedIndex()!=0)
+				status=allCou.get(comboBox_2.getSelectedIndex()-1).getUc_plus();
+			String can=String.valueOf(comboBox_2.getSelectedItem());
+			if(can!="已过期")
+			{
+				if(status==1)
+				{
+					ffsum=fsum-(int)comboBox_2.getSelectedItem();
+					labelfin.setText(String.valueOf(ffsum));
+					isCou=1;
+				}
+				else if(status==0)
+				{
+					labelfin.setText(String.valueOf(fsum));
+					ffsum=fsum;
+					winMessage("所选优惠券不可以和满减叠加！");
+					isCou=0;
+				}
+			if(comboBox_2.getSelectedIndex()==0) {
+				isCou=0;
+				ffsum=fsum;
+				labelfin.setText(String.valueOf(fsum));
+			}
+			}
+			else
+			{
+				labelfin.setText(String.valueOf(fsum));
+			}
+		}
 		else if(ac.getSource()==this.button_2)//创建订单
 		{
 			Random random = new Random();//暂时随机找一个骑手接单
@@ -452,14 +537,18 @@ public class UserMainUI extends JFrame implements ActionListener{
 					order.setGo_reid(2);
 				else if(fsum==sum-50)
 					order.setGo_reid(3);
-				order.setGo_newpri(1);//加入优惠券之后的最后金额
+				
+				if(isCou==1)//使用消费券则更新持有消费券数量
+					CouponMannager.UseCou(allCou.get(comboBox_2.getSelectedIndex()-1).getUc_cid());
+				
+				order.setGo_newpri(ffsum);//加入优惠券之后的最后金额
 				order.setGo_rid(random.nextInt(maxrid)+1);//随即骑手接单
-				order.setGo_cid(1);//1测试
+				order.setGo_cid(allCou.get(comboBox_2.getSelectedIndex()-1).getUc_cid());
 				order.setGo_sttime(new java.sql.Timestamp(System.currentTimeMillis()));//获取当前时间戳，修改数据类型，之后时间戳+1即可
 				Long time=System.currentTimeMillis();
 				java.util.Date date=new java.util.Date(time);
 				time+=60*1000*60;//获取一小时后的时间
-				order.setGo_edtime(new java.sql.Timestamp(time));//存疑，不知道能不能这样加。 还是要用时间戳？ format
+				order.setGo_edtime(new java.sql.Timestamp(time));
 				order.setGo_status("配送中");
 				order.setGo_addr((String)comboBox.getSelectedItem());
 				for(int k=0;k<count;k++)//用于输入订单商品信息
@@ -482,13 +571,16 @@ public class UserMainUI extends JFrame implements ActionListener{
 				count=0;
 				sum=0;
 				fsum=0;
+				ffsum=0;
+				isCou=0;
 				Labelsum.setText("暂时没有商品");//重置购物车和各种东西
-				
+				order=new BeanGoodOrder();//重新初始化，读取新的订单ID
 			}catch (NumberFormatException e) {
 			    winMessage("格式出错 请重新设置购物车");
 			    return;
 			}catch(BaseException e) {
 				e.printStackTrace();
+				winMessage("格式出错 请重新设置购物车");
 			}
 		}
 	}

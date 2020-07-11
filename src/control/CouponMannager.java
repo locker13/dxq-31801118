@@ -194,10 +194,11 @@ public class CouponMannager {
 				BeanUserCoup s=new BeanUserCoup();
 				s.setUc_uid(rs.getInt(1));
 				s.setUc_cid(rs.getInt(2));
-				s.setUc_sid(rs.getInt(3));
-				s.setUc_red(rs.getInt(4));
-				s.setUc_sum(rs.getInt(5));
-				s.setEndtime(rs.getDate(6));
+				//s.setUc_sid(rs.getInt(3));
+				s.setUc_red(rs.getInt(3));
+				s.setUc_sum(rs.getInt(4));
+				s.setEndtime(rs.getDate(5));
+				s.setUc_plus(rs.getInt(6));
 				result.add(s);
 			}
 		}catch (SQLException e) {
@@ -214,5 +215,48 @@ public class CouponMannager {
 				}
 		}
 		return result;
+	}
+	public static void UseCou(int cid) throws BaseException{
+		Connection conn=null;
+		int sum=0;
+		try {
+			conn=DBUtil.getConnection();
+			String sql="select uc_sum from user_coupon where uc_cid=? and uc_uid=?";
+			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setInt(1, cid);
+			pst.setInt(2, BeanUserMsg.currentLoginUser.getUm_id());
+			java.sql.ResultSet rs=pst.executeQuery();
+			if(rs.next())
+				sum=rs.getInt(1);
+			if(sum==1)
+			{
+				sql="delete from user_coupon where uc_cid=? and uc_uid=?";
+				pst=conn.prepareStatement(sql);
+				pst.setInt(1, cid);
+				pst.setInt(2, BeanUserMsg.currentLoginUser.getUm_id());
+				pst.execute();
+				pst.close();
+			}
+			else {
+				sql="Update user_coupon set uc_sum=uc_sum-1 where uc_cid=? and uc_uid=?";
+				pst=conn.prepareStatement(sql);
+				pst.setInt(1, cid);
+				pst.setInt(2, BeanUserMsg.currentLoginUser.getUm_id());
+				pst.execute();
+				pst.close();
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+			throw new DbException(e);
+		}
+		finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
 	}
 }

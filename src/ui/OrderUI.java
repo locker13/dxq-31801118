@@ -119,7 +119,7 @@ public class OrderUI extends JFrame implements ActionListener{
 	 * Create the frame.
 	 */
 	public OrderUI() {
-		setTitle("\u5546\u54C1\u7BA1\u7406");
+		setTitle("\u67E5\u770B\u8BA2\u5355");
 		 this.dataTableKind.addMouseListener(new MouseAdapter (){
 
 				@Override
@@ -158,7 +158,7 @@ public class OrderUI extends JFrame implements ActionListener{
 		contentPane.add(ShopName);
 		ShopName.setColumns(10);
 		
-		button = new JButton("\u67E5\u8BE2\u5546\u54C1\u7C7B");
+		button = new JButton("\u67E5\u8BE2");
 		button.setFont(new Font("ËÎÌו", Font.PLAIN, 15));
 		button.setBounds(357, 6, 135, 27);
 		contentPane.add(button);
