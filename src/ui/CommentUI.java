@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 import control.GoodsMannager;
 import model.BeanGoodComt;
+import model.BeanUserMsg;
 import util.BaseException;
 
 import javax.swing.JLabel;
@@ -42,7 +43,6 @@ public class CommentUI extends JFrame implements ActionListener {
 	DefaultTableModel tabShopModel=new DefaultTableModel();
 	private JTable dataTableShop=new JTable(tabShopModel);
 	private JButton button_2;
-	private JButton button_3;
 	private BeanGoodComt curShop=null;
 	private JButton button_4;
 	private JButton button_5;
@@ -110,6 +110,7 @@ public class CommentUI extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public CommentUI(int gid) {
+		gid1=gid;
 		setTitle("\u8BC4\u8BBA");
 		 this.dataTableShop.addMouseListener(new MouseAdapter (){
 
@@ -152,12 +153,6 @@ public class CommentUI extends JFrame implements ActionListener {
 		scrollPane.setLocation(0, 38);
 		this.getContentPane().add(scrollPane);
 		
-		button_3 = new JButton("\u4FEE\u6539\u4FE1\u606F");
-		button_3.setFont(new Font("宋体", Font.PLAIN, 22));
-		button_3.setBounds(1007, 80, 129, 62);
-		contentPane.add(button_3);
-		button_3.addActionListener(this);
-		
 		button_4 = new JButton("\u5220\u9664\u8BC4\u8BBA");
 		button_4.setFont(new Font("宋体", Font.PLAIN, 22));
 		button_4.setBounds(1007, 192, 129, 62);
@@ -173,6 +168,9 @@ public class CommentUI extends JFrame implements ActionListener {
 		this.reloadShopTable(gid);
 		
 	}
+	public static void winMessage(String str) {// 提示窗口，有多个地方调用
+		JOptionPane.showMessageDialog(null, str, "提示",JOptionPane.INFORMATION_MESSAGE);
+	}
 	@Override
 	public void actionPerformed(ActionEvent ac)
 	{
@@ -187,6 +185,8 @@ public class CommentUI extends JFrame implements ActionListener {
 		else if(ac.getSource()==this.button_4)
 		{
 			try {
+				if(curShop.getGc_uid()!=BeanUserMsg.currentLoginUser.getUm_id())
+					winMessage("只能删除自己的评论！");
 				GoodsMannager.deleteComm(curShop);
 			}catch (BaseException e) {
 				JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);

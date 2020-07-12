@@ -37,8 +37,8 @@ public class OrderMannager {
 				s.setGo_newpri(rs.getDouble(5));
 				s.setGo_reid(rs.getInt(6));
 				s.setGo_cid(rs.getInt(7));
-				s.setGo_sttime(rs.getDate(8));
-				s.setGo_edtime(rs.getDate(9));
+				s.setGo_sttime(rs.getTimestamp(8));
+				s.setGo_edtime(rs.getTimestamp(9));
 				/*s.setGo_sttime(rs.getTimestamp(8));
 				s.setGo_edtime(rs.getTimestamp(9));*/
 				s.setGo_addr(rs.getString(10));

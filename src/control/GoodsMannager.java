@@ -337,7 +337,7 @@ public class GoodsMannager {
 			pst.setInt(2, s.getGc_sid());
 			pst.setInt(3, s.getGc_uid());
 			pst.setString(4, s.getGc_word());
-			pst.setDate(5, s.getGc_date());
+			pst.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
 			pst.setInt(6, s.getGc_star());
 			pst.execute();
 			pst.close();
@@ -362,7 +362,7 @@ public class GoodsMannager {
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.setInt(1, s.getGc_gid());
 			pst.setInt(2, s.getGc_sid());
-			pst.setInt(3, s.getGc_uid());
+			pst.setInt(3, BeanUserMsg.currentLoginUser.getUm_id());
 			pst.setString(4, s.getGc_word());
 			pst.execute();
 			pst.close();

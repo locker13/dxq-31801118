@@ -1,6 +1,6 @@
 package model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -21,21 +21,23 @@ public class BeanGoodOrder {
 	private String go_addr;
 	private double go_oldpri;
 	private double go_newpri;
-	private Date go_sttime;
-	private Date go_edtime;
+	/*private Date go_sttime;
+	private Date go_edtime;*/
+	private Timestamp go_sttime;
+	private Timestamp go_edtime;
 	public int getGo_oid() {
 		return go_oid;
 	}
-	public Date getGo_sttime() {
+	public Timestamp getGo_sttime() {
 		return go_sttime;
 	}
-	public void setGo_sttime(Date go_sttime) {
+	public void setGo_sttime(Timestamp go_sttime) {
 		this.go_sttime = go_sttime;
 	}
-	public Date getGo_edtime() {
+	public Timestamp getGo_edtime() {
 		return go_edtime;
 	}
-	public void setGo_edtime(Date go_edtime) {
+	public void setGo_edtime(Timestamp go_edtime) {
 		this.go_edtime = go_edtime;
 	}
 	public void setGo_oid(int go_oid) {

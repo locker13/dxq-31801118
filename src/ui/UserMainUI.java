@@ -416,6 +416,10 @@ public class UserMainUI extends JFrame implements ActionListener{
 		contentPane.add(button_7);
 
 		this.reloadShopTable();
+		tblCartData=new Object[20][BeanGoodDts.tblCartTitle.length];//重载界面的时候要清空购物车
+		tabCartModel.setDataVector(tblCartData,tblCartTitle);
+		this.dataCart.validate();
+		this.dataCart.repaint();
 	}
 	public static void winMessage(String str) {// 提示窗口，有多个地方调用
 		JOptionPane.showMessageDialog(null, str, "提示",JOptionPane.INFORMATION_MESSAGE);
@@ -477,6 +481,8 @@ public class UserMainUI extends JFrame implements ActionListener{
 			ffsum=0;
 			isCou=0;
 			Labelsum.setText("暂时没有商品");
+			labelfsum.setText("");
+			labelfin.setText("");
 		}
 		else if(ac.getSource()==this.button_5)
 		{
@@ -486,6 +492,7 @@ public class UserMainUI extends JFrame implements ActionListener{
 		}
 		else if(ac.getSource()==this.button_6)
 		{
+			curGoods=allGood.get(flag);
 			CommentUI frame=new CommentUI(curGoods.getGd_id());
 			frame.setVisible(true);
 		} 
