@@ -140,6 +140,19 @@ public class UserMannager {
 			SimpleDateFormat q = new SimpleDateFormat("yyyy-MM-dd");
 			java.util.Date fd=q.parse(nextMonth());
 			BeanUserMsg.currentLoginUser.setUm_endtime(new java.sql.Date(fd.getTime()));
+			sql="select * from user_coupon where uc_uid=? and uc_cid=1";
+			pst=conn.prepareStatement(sql);
+			pst.setInt(1, BeanUserMsg.currentLoginUser.getUm_id());
+			java.sql.ResultSet rs=pst.executeQuery();
+			sql="Insert into user_coupon values(?,?,?,?,?,?)";
+			pst=conn.prepareStatement(sql);
+			pst.setInt(1, BeanUserMsg.currentLoginUser.getUm_id());
+			pst.setInt(2, 1);
+			pst.setInt(3, 10);
+			pst.setInt(4, 2);
+			pst.setTimestamp(5, new java.sql.Timestamp(System.currentTimeMillis()+604800*1000));
+			pst.setInt(6, 1);
+			pst.execute();
 			pst.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

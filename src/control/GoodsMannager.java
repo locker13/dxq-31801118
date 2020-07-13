@@ -296,10 +296,10 @@ public class GoodsMannager {
 		Connection conn=null;
 		try {
 			conn=DBUtil.getConnection();
-			String sql="select * from goods_comment where gc_gid=? and gc_uid=?";
+			String sql="select * from goods_comment where gc_gid=?";
 			java.sql.PreparedStatement pst=conn.prepareStatement(sql);
 			pst.setInt(1, gid);
-			pst.setInt(2, BeanUserMsg.currentLoginUser.getUm_id());
+			//pst.setInt(2, BeanUserMsg.currentLoginUser.getUm_id());
 			java.sql.ResultSet rs=pst.executeQuery();
 			while(rs.next())
 			{

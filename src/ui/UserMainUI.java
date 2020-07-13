@@ -550,7 +550,10 @@ public class UserMainUI extends JFrame implements ActionListener{
 				
 				order.setGo_newpri(ffsum);//加入优惠券之后的最后金额
 				order.setGo_rid(random.nextInt(maxrid)+1);//随即骑手接单
-				order.setGo_cid(allCou.get(comboBox_2.getSelectedIndex()-1).getUc_cid());
+				if(comboBox_2.getSelectedIndex()==0)
+					order.setGo_cid(0);
+				else
+					order.setGo_cid(allCou.get(comboBox_2.getSelectedIndex()-1).getUc_cid());
 				order.setGo_sttime(new java.sql.Timestamp(System.currentTimeMillis()));//获取当前时间戳，修改数据类型，之后时间戳+1即可
 				Long time=System.currentTimeMillis();
 				java.util.Date date=new java.util.Date(time);

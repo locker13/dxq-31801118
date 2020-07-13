@@ -38,9 +38,7 @@ public class MemberInUI extends JFrame implements ActionListener{
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+
 	public MemberInUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -73,7 +71,7 @@ public class MemberInUI extends JFrame implements ActionListener{
 			try {
 				UserMannager.MemberIn(BeanUserMsg.currentLoginUser);
 				BeanUserMsg.currentLoginUser.setUm_status(1);
-				winMessage("成功开通一个月会员！");
+				winMessage("成功开通一个月会员！顺便赠送您2张为期七天的十元无门款优惠券");
 				this.setVisible(false);
 				UserUI frame=new UserUI();
 				frame.setVisible(true);

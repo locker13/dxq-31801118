@@ -28,26 +28,7 @@ public class MenberUI extends JFrame implements ActionListener{
 	private JPanel contentPane;
 	
 	JButton button_2 = new JButton("\u8FD4\u56DE");
-	
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenberUI frame = new MenberUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
-	/**
-	 * Create the frame.
-	 */
 	public MenberUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 522, 378);

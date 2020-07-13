@@ -70,7 +70,7 @@ public class LoginUI extends JDialog implements ActionListener {
 		title.setBounds(375, 10, 370, 30);
 		title.setFont(font);
 //		title.setForeground(Color.black);
-		title.setForeground(Color.white);
+		title.setForeground(Color.yellow);
 
 		name1.setBounds(140, 140, 85, 30);// 账号的位置大小
 		name1.setFont(font1);// 字体
@@ -198,20 +198,11 @@ public class LoginUI extends JDialog implements ActionListener {
 							frame.setVisible(true);
 						}
 								this.jf.dispose();
-						//}
-					/*} else {
-						winMessage("验证码不正确！");
-						textCode.setText("");
-						this.code2.setText(code());
-					}*/
 				}
 			} else if (ac.getSource() == this.btn_rgist) {
 				RegisterUI rg=new RegisterUI();
-				//rg.main(null);//跳出注册界面
-				//new RegisterUI();
 				RegisterUI frame = new RegisterUI();
 				frame.setVisible(true);
-				//this.jf.dispose();// 点击按钮时,new一个frame，原先frame销毁
 			}
 		
 		}
